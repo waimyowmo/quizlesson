@@ -8,7 +8,7 @@ class Questions {
 int questionnum = 0;
 
 class Qdata {
-  List<Questions> questions = [
+  List<Questions> quickbrain = [
     Questions(
         question: 'Bhamo Township is located in Shan State.', answer: false),
     Questions(
@@ -23,16 +23,14 @@ class Qdata {
   ];
 
   String question(int questionnum) {
-    return questions[questionnum].question;
+    return quickbrain[questionnum].question;
   }
 
   bool answer(int questionnum) {
-    return questions[questionnum].answer;
+    return quickbrain[questionnum].answer;
   }
 
-  void next() {
-    if (questionnum < questions.length - 1) {
-      questionnum++;
-    }
+  int qlen() {
+    return quickbrain.length;
   }
 }

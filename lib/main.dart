@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'qdata.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,27 +29,15 @@ class Quiz extends StatefulWidget {
 class _QuizState extends State<Quiz> {
   List<Icon> score = [];
 
-  void mark(bool scortype) {
-    if (qdata.answer(questionnum) == scortype) {
-      score.add(
-        Icon(
-          Icons.check,
-          color: Colors.green,
-        ),
-      );
+  void next() {
+    if (questionnum < (qdata.qlen() - 1)) {
+      questionnum++;
     } else {
-      score.add(
-        Icon(
-          Icons.close,
-          color: Colors.red,
-        ),
-      );
+      questionnum = 0;
+      score.clear();
+      Alert(context: context, title: "Good Job!", desc: "Complete All Answer")
+          .show();
     }
-    setState(
-      () {
-        qdata.next();
-      },
-    );
   }
 
   @override
@@ -76,7 +65,25 @@ class _QuizState extends State<Quiz> {
               child: FlatButton(
                 color: Colors.green,
                 onPressed: () {
-                  mark(true);
+                  bool myans = qdata.answer(questionnum);
+                  setState(() {
+                    if (myans == true) {
+                      score.add(
+                        Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        ),
+                      );
+                    } else {
+                      score.add(
+                        Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                      );
+                    }
+                    next();
+                  });
                 },
                 child: Text('မှန်'),
               ),
@@ -88,7 +95,25 @@ class _QuizState extends State<Quiz> {
               child: FlatButton(
                 color: Colors.red,
                 onPressed: () {
-                  mark(false);
+                  bool myans = qdata.answer(questionnum);
+                  setState(() {
+                    if (myans == false) {
+                      score.add(
+                        Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        ),
+                      );
+                    } else {
+                      score.add(
+                        Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                      );
+                    }
+                    next();
+                  });
                 },
                 child: Text('မှား'),
               ),
@@ -102,3 +127,7 @@ class _QuizState extends State<Quiz> {
     );
   }
 }
+
+//   @override
+//   Widget build(BuildContext context) {
+//
