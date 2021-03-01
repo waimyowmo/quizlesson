@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizstime/buttom.dart';
 import 'qdata.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -11,8 +12,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.yellowAccent,
+        backgroundColor: Color(0xff1F1D28),
         body: Quiz(),
       ),
     );
@@ -40,11 +42,32 @@ class _QuizState extends State<Quiz> {
     }
   }
 
+  void mark(bool scoretype) {
+    bool myans = qdata.answer(questionnum);
+    setState(() {
+      if (myans == scoretype) {
+        score.add(
+          Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        );
+      } else {
+        score.add(
+          Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+      next();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
@@ -52,72 +75,41 @@ class _QuizState extends State<Quiz> {
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Center(
-                child: Text(
-                  qdata.question(questionnum),
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    qdata.question(questionnum),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                 ),
               ),
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(7.0),
-              child: FlatButton(
-                color: Colors.green,
-                onPressed: () {
-                  bool myans = qdata.answer(questionnum);
-                  setState(() {
-                    if (myans == true) {
-                      score.add(
-                        Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        ),
-                      );
-                    } else {
-                      score.add(
-                        Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                      );
-                    }
-                    next();
-                  });
+              padding: const EdgeInsets.all(10.0),
+              child: Buttom(
+                mycolor: Colors.green,
+                mytext: Text('မှန်'),
+                marks: () {
+                  mark(true);
                 },
-                child: Text('မှန်'),
               ),
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(7.0),
-              child: FlatButton(
-                color: Colors.red,
-                onPressed: () {
-                  bool myans = qdata.answer(questionnum);
-                  setState(() {
-                    if (myans == false) {
-                      score.add(
-                        Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        ),
-                      );
-                    } else {
-                      score.add(
-                        Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                      );
-                    }
-                    next();
-                  });
-                },
-                child: Text('မှား'),
-              ),
-            ),
+                padding: const EdgeInsets.all(10.0),
+                child: Buttom(
+                  mycolor: Color(0xffCF4834),
+                  mytext: Text('မှား'),
+                  marks: () {
+                    mark(false);
+                  },
+                )),
           ),
           Row(
             children: score,
@@ -127,7 +119,3 @@ class _QuizState extends State<Quiz> {
     );
   }
 }
-
-//   @override
-//   Widget build(BuildContext context) {
-//
